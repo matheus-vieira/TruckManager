@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TruckManager.WebUi", "TruckManager.WebUi\TruckManager.WebUi.csproj", "{B71AC719-25DF-4FD5-9B18-6CED28A47BB3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B71AC719-25DF-4FD5-9B18-6CED28A47BB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B71AC719-25DF-4FD5-9B18-6CED28A47BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B71AC719-25DF-4FD5-9B18-6CED28A47BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B71AC719-25DF-4FD5-9B18-6CED28A47BB3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B5530586-9133-4C25-B82B-22216D29CD0C}
+	EndGlobalSection
+EndGlobal
