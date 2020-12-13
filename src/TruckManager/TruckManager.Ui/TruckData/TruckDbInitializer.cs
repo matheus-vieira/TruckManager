@@ -63,14 +63,11 @@ namespace TruckManager.Ui.TruckData
             if (context.TruckModels.Any())
                 return; // DB has been seeded
 
-            var truckModels = new TruckModel[]
+            context.TruckModels.AddRange(new TruckModel[]
             {
                 new TruckModel { Model = "FH", ModelYear = GetYear() },
                 new TruckModel { Model = "FM", ModelYear = GetYear() }
-            };
-
-            foreach (var model in truckModels)
-                context.TruckModels.Add(model);
+            });
 
             context.SaveChanges();
         }

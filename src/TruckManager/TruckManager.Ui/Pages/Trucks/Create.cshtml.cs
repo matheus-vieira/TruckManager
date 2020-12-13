@@ -34,21 +34,10 @@ namespace TruckManager.Ui.Pages.Trucks
                 return Page();
             }
 
-            var canUpdate = await TryUpdateModelAsync(Truck, "truck",
-                s => s.Name,
-                s => s.Year,
-                s => s.ModelId);
 
-            if (canUpdate)
-            {
-                _context.Trucks.Add(Truck);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
-            }
-
-            PopulateTruckModelDropDownList(_context, Truck.Model.Id);
-
-            return Page();
+            _context.Trucks.Add(Truck);
+            await _context.SaveChangesAsync();
+            return RedirectToPage("./Index");
 
         }
     }

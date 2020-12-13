@@ -61,6 +61,11 @@ namespace TruckManager.Ui.Pages.Trucks
 
             Truck = await _context.Trucks.FindAsync(id);
 
+            if (Truck == null)
+            {
+                return NotFound();
+            }
+
             try
             {
                 _context.Trucks.Remove(Truck);

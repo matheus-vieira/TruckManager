@@ -15,12 +15,10 @@ namespace TruckManager.Ui.Pages.Trucks
     public class IndexModel : PageModel
     {
         private readonly TruckManager.Ui.TruckData.TruckContext _context;
-        private readonly MvcOptions _mvcOptions;
 
-        public IndexModel(TruckManager.Ui.TruckData.TruckContext context, IOptions<MvcOptions> mvcOptions)
+        public IndexModel(TruckManager.Ui.TruckData.TruckContext context)
         {
             _context = context;
-            _mvcOptions = mvcOptions.Value;
         }
 
 
@@ -74,9 +72,8 @@ namespace TruckManager.Ui.Pages.Trucks
                 _ => trucksIQ.OrderBy(s => s.Name),
             };
 
-            int pageSize = _mvcOptions.MaxModelBindingCollectionSize;
             Trucks = await PaginatedList<Truck>.CreateAsync(
-                trucksIQ.Include(t => t.Model).AsNoTracking(), pageIndex ?? 1, pageSize);
+                trucksIQ.Include(t => t.Model).AsNoTracking(), pageIndex ?? 1, 10);
         }
     }
 }

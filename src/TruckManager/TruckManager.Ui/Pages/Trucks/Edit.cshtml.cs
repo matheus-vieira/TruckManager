@@ -45,33 +45,38 @@ namespace TruckManager.Ui.Pages.Trucks
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(Guid id)
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                PopulateTruckModelDropDownList(_context, Truck.Model.Id);
                 return Page();
             }
 
-            var truckToUpdate = await _context.Trucks.FindAsync(id);
+            _context.Attach(Truck).State = EntityState.Modified;
 
-            if (truckToUpdate == null)
-            {
-                return NotFound();
-            }
-
-            var canUpdate = await TryUpdateModelAsync(truckToUpdate, "truck",
-                s => s.Name,
-                s => s.Year,
-                s => s.ModelId);
-
-            if (canUpdate)
+            try
             {
                 await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TruckExists(Truck.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            PopulateTruckModelDropDownList(_context, Truck.Model.Id);
-            return Page();
+            return RedirectToPage("./Index");
+        }
+
+        private bool TruckExists(Guid id)
+        {
+            return _context.Trucks.Any(e => e.Id == id);
         }
     }
 }
