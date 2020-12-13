@@ -1,0 +1,121 @@
+﻿@page
+@model TruckManager.Ui.Pages.Trucks.IndexModel
+
+@{
+    ViewData["Title"] = "Trucks";
+    var prevDisabled = !Model.Trucks.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Trucks.HasNextPage ? "disabled" : "";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by truck year:
+            <input type="text" name="year" value="@Model.YearFilter" />
+        </p>
+        <p>
+            Find by truck model name:
+            <input type="text" name="modelName" value="@Model.ModelNameFilter" />
+        </p>
+        <p>
+            Find by truck model year:
+            <input type="text" name="modelYear" value="@Model.ModelYearFilter" />
+        </p>
+        <p>
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Trucks.PageIndex - 1)"
+   asp-route-yearFilter="@Model.YearFilter"
+   asp-route-modelNameFilter="@Model.ModelNameFilter"
+   asp-route-modelYearFilter="@Model.ModelNameFilter"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Trucks.PageIndex + 1)"
+   asp-route-yearFilter="@Model.YearFilter"
+   asp-route-modelNameFilter="@Model.ModelNameFilter"
+   asp-route-modelYearFilter="@Model.ModelNameFilter"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.YearSort"
+                   asp-route-yearFilter="@Model.YearFilter">
+                    @Html.DisplayNameFor(model => model.Trucks[0].Year)
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.ModelSort"
+                   asp-route-modelNameFilter="@Model.ModelNameFilter">
+                    @Html.DisplayNameFor(model => model.Trucks[0].Model.Model)
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.ModelYearSort"
+                   asp-route-modelYearFilter="@Model.ModelNameFilter">
+                    Model Year
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Trucks)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model.ModelYear)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Trucks.PageIndex - 1)"
+   asp-route-yearFilter="@Model.YearFilter"
+   asp-route-modelNameFilter="@Model.ModelNameFilter"
+   asp-route-modelYearFilter="@Model.ModelNameFilter"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Trucks.PageIndex + 1)"
+   asp-route-yearFilter="@Model.YearFilter"
+   asp-route-modelNameFilter="@Model.ModelNameFilter"
+   asp-route-modelYearFilter="@Model.ModelNameFilter"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>
+
