@@ -55,15 +55,6 @@ namespace TruckManager.Ui.Pages.Trucks
 
             IQueryable<Truck> trucksIQ = from s in _context.Trucks select s;
 
-            if (string.IsNullOrEmpty(NameFilter) &&
-                string.IsNullOrEmpty(YearFilter) &&
-                string.IsNullOrEmpty(ModelNameFilter) &&
-                string.IsNullOrEmpty(ModelYearFilter))
-            {
-                pageIndex = 1;
-            }
-
-
             trucksIQ = trucksIQ.Where(s =>
             (string.IsNullOrEmpty(NameFilter) || s.Name.Contains(NameFilter)) &&
             (string.IsNullOrEmpty(YearFilter) || s.Year.Contains(YearFilter)) &&
@@ -75,10 +66,12 @@ namespace TruckManager.Ui.Pages.Trucks
             {
                 "year" => trucksIQ.OrderBy(s => s.Year),
                 "year_desc" => trucksIQ.OrderByDescending(s => s.Year),
+                "name_desc" => trucksIQ.OrderByDescending(s => s.Name),
+                "model_name" => trucksIQ.OrderBy(s => s.Model.Model),
                 "model_name_desc" => trucksIQ.OrderByDescending(s => s.Model.Model),
                 "model_year" => trucksIQ.OrderBy(s => s.Model.ModelYear),
                 "model_year_desc" => trucksIQ.OrderByDescending(s => s.Model.ModelYear),
-                _ => trucksIQ.OrderBy(s => s.Model.Model),
+                _ => trucksIQ.OrderBy(s => s.Name),
             };
 
             int pageSize = _mvcOptions.MaxModelBindingCollectionSize;
