@@ -16,16 +16,20 @@
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
         <p>
+            Find by truck name:
+            <input asp-for="@Model.NameFilter" />
+        </p>
+        <p>
             Find by truck year:
-            <input type="text" name="year" value="@Model.YearFilter" />
+            <input asp-for="@Model.YearFilter" />
         </p>
         <p>
             Find by truck model name:
-            <input type="text" name="modelName" value="@Model.ModelNameFilter" />
+            <input asp-for="@Model.ModelNameFilter" />
         </p>
         <p>
             Find by truck model year:
-            <input type="text" name="modelYear" value="@Model.ModelYearFilter" />
+            <input asp-for="@Model.ModelYearFilter" />
         </p>
         <p>
             <input type="submit" value="Search" class="btn btn-primary" /> |
@@ -56,6 +60,10 @@
 <table class="table">
     <thead>
         <tr>
+            <th><a asp-page="./Index" asp-route-sortOrder="@Model.NameSort" asp-route-yearFilter="@Model.NameFilter">
+    @Html.DisplayNameFor(model => model.Trucks[0].Name)
+</a>
+            </th>
             <th>
                 <a asp-page="./Index" asp-route-sortOrder="@Model.YearSort"
                    asp-route-yearFilter="@Model.YearFilter">
@@ -81,6 +89,9 @@
         @foreach (var item in Model.Trucks)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Year)
                 </td>

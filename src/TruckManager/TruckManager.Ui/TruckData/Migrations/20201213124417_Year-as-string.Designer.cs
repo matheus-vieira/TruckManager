@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TruckManager.Ui.TruckData;
 
 namespace TruckManager.Ui.TruckData.Migrations
 {
     [DbContext(typeof(TruckContext))]
-    partial class TruckContextModelSnapshot : ModelSnapshot
+    [Migration("20201213124417_Year-as-string")]
+    partial class Yearasstring
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

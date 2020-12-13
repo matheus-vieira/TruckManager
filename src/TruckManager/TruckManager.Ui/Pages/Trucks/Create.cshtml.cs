@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using TruckManager.Ui.TruckData;
 using TruckManager.Ui.TruckData.Models;
 
 namespace TruckManager.Ui.Pages.Trucks
 {
-    public class CreateModel : PageModel
+    public class CreateModel : TruckModelPageModel
     {
         private readonly TruckManager.Ui.TruckData.TruckContext _context;
 
@@ -21,30 +16,37 @@ namespace TruckManager.Ui.Pages.Trucks
 
         public IActionResult OnGet()
         {
+            PopulateTruckModelDropDownList(_context);
+
             return Page();
         }
 
         [BindProperty]
         public Truck Truck { get; set; }
 
+
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                PopulateTruckModelDropDownList(_context, Truck.ModelId);
                 return Page();
             }
 
-            var truck = new Truck();
-
-            var canUpdate = await TryUpdateModelAsync(truck, "truck", s => s.Year);
+            var canUpdate = await TryUpdateModelAsync(Truck, "truck",
+                s => s.Name,
+                s => s.Year,
+                s => s.ModelId);
 
             if (canUpdate)
             {
-                _context.Trucks.Add(truck);
+                _context.Trucks.Add(Truck);
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
+
+            PopulateTruckModelDropDownList(_context, Truck.Model.Id);
 
             return Page();
 

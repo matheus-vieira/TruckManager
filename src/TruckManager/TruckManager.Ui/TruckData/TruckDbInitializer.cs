@@ -38,7 +38,8 @@ namespace TruckManager.Ui.TruckData
             for (int i = 0; i < 500; i++)
                 context.Trucks.Add(new Truck
                 {
-                    Year = GetYear().ToString(),
+                    Name = "Seed " + i,
+                    Year = GetYear(),
                     Model = GetRandomModel(context)
                 });
 
@@ -49,7 +50,7 @@ namespace TruckManager.Ui.TruckData
         private static readonly int minimumYear = DateTime.Today.Year;
         private static readonly int maximumYear = DateTime.Today.Year + 2;
 
-        private static int GetYear() => random.Next(minimumYear, maximumYear);
+        private static string GetYear() => new DateTime(random.Next(minimumYear, maximumYear), 1, 1).Year.ToString();
 
         private static TruckModel GetRandomModel(TruckContext context)
         {
@@ -64,8 +65,8 @@ namespace TruckManager.Ui.TruckData
 
             var truckModels = new TruckModel[]
             {
-                new TruckModel { Model = "FH", ModelYear = GetYear().ToString() },
-                new TruckModel { Model = "FM", ModelYear = GetYear().ToString() }
+                new TruckModel { Model = "FH", ModelYear = GetYear() },
+                new TruckModel { Model = "FM", ModelYear = GetYear() }
             };
 
             foreach (var model in truckModels)

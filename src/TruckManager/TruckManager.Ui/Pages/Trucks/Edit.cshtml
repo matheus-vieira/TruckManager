@@ -13,10 +13,22 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Truck.Id" />
+            <div class="form-group">
+                <label asp-for="Truck.Model" class="control-label"></label>
+                <select asp-for="Truck.ModelId" class="form-control"
+                        asp-items="@Model.TruckModelsSelectList">
+                    <option value="">-- Select a model --</option>
+                </select>
+                <span asp-validation-for="Truck.ModelId" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Truck.Name" class="control-label"></label>
+                <input asp-for="Truck.Name" class="form-control" />
+                <span asp-validation-for="Truck.Name" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Truck.Year" class="control-label"></label>
-                <input asp-for="Truck.Year" class="form-control" />
+                <input asp-for="Truck.Year" class="form-control" type="number" min="@DateTime.Today.Year" max="@(DateTime.Today.Year + 1)" />
                 <span asp-validation-for="Truck.Year" class="text-danger"></span>
             </div>
             <div class="form-group">

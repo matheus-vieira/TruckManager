@@ -35,8 +35,9 @@ namespace TruckManager.Ui.Pages.Trucks
             }
 
             Truck = await _context.Trucks
+                .Include(t => t.Model)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(t => t.Id == id);
 
             if (Truck == null)
             {

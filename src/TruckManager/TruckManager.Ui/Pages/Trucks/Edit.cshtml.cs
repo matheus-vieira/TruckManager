@@ -11,7 +11,7 @@ using TruckManager.Ui.TruckData.Models;
 
 namespace TruckManager.Ui.Pages.Trucks
 {
-    public class EditModel : PageModel
+    public class EditModel : TruckModelPageModel
     {
         private readonly TruckManager.Ui.TruckData.TruckContext _context;
 
@@ -30,12 +30,16 @@ namespace TruckManager.Ui.Pages.Trucks
                 return NotFound();
             }
 
-            Truck = await _context.Trucks.FindAsync(id);
+            Truck = await _context.Trucks
+                .Include(t => t.Model)
+                .FirstOrDefaultAsync(t => t.Id == id);
 
             if (Truck == null)
             {
                 return NotFound();
             }
+
+            PopulateTruckModelDropDownList(_context, Truck.Model.Id);
             return Page();
         }
 
@@ -55,7 +59,10 @@ namespace TruckManager.Ui.Pages.Trucks
                 return NotFound();
             }
 
-            var canUpdate = await TryUpdateModelAsync(truckToUpdate, "truck", s => s.Year);
+            var canUpdate = await TryUpdateModelAsync(truckToUpdate, "truck",
+                s => s.Name,
+                s => s.Year,
+                s => s.ModelId);
 
             if (canUpdate)
             {
@@ -63,6 +70,7 @@ namespace TruckManager.Ui.Pages.Trucks
                 return RedirectToPage("./Index");
             }
 
+            PopulateTruckModelDropDownList(_context, Truck.Model.Id);
             return Page();
         }
     }

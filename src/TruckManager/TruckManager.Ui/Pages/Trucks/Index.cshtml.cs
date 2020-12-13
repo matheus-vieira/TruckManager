@@ -24,36 +24,51 @@ namespace TruckManager.Ui.Pages.Trucks
         }
 
 
+        public string NameSort { get; set; }
         public string YearSort { get; set; }
         public string ModelSort { get; set; }
         public string ModelYearSort { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string NameFilter { get; set; }
+
+        [BindProperty(SupportsGet = true)]
         public string YearFilter { get; set; }
+
+        [BindProperty(SupportsGet = true)]
         public string ModelNameFilter { get; set; }
+
+        [BindProperty(SupportsGet = true)]
         public string ModelYearFilter { get; set; }
+
         public string CurrentSort { get; set; }
+
         public PaginatedList<Truck> Trucks { get; set; }
 
-        public async Task OnGetAsync(string sortOrder, string year, string modelName, string modelYear, int? pageIndex)
+        public async Task OnGetAsync(string sortOrder, int? pageIndex)
         {
             CurrentSort = sortOrder;
             YearSort = string.IsNullOrEmpty(sortOrder) ? "year_desc" : "";
             ModelSort = sortOrder == "model_name" ? "model_name_desc" : "model_name";
             ModelYearSort = sortOrder == "model_year" ? "model_year_desc" : "model_year";
+            NameSort = sortOrder == "name" ? "name_desc" : "name";
 
             IQueryable<Truck> trucksIQ = from s in _context.Trucks select s;
 
-            if (string.IsNullOrEmpty(year) &&
-                string.IsNullOrEmpty(modelName) &&
-                string.IsNullOrEmpty(modelYear))
+            if (string.IsNullOrEmpty(NameFilter) &&
+                string.IsNullOrEmpty(YearFilter) &&
+                string.IsNullOrEmpty(ModelNameFilter) &&
+                string.IsNullOrEmpty(ModelYearFilter))
             {
                 pageIndex = 1;
             }
 
 
             trucksIQ = trucksIQ.Where(s =>
-            (string.IsNullOrEmpty(year) || s.Year.Contains(year)) &&
-            (string.IsNullOrEmpty(modelName) || s.Model.Model.Contains(modelName)) &&
-            (string.IsNullOrEmpty(modelYear) || s.Model.ModelYear.Contains(modelYear)));
+            (string.IsNullOrEmpty(NameFilter) || s.Name.Contains(NameFilter)) &&
+            (string.IsNullOrEmpty(YearFilter) || s.Year.Contains(YearFilter)) &&
+            (string.IsNullOrEmpty(ModelNameFilter) || s.Model.Model.Contains(ModelNameFilter)) &&
+            (string.IsNullOrEmpty(ModelYearFilter) || s.Model.ModelYear.Contains(ModelYearFilter)));
 
 
             trucksIQ = sortOrder switch
