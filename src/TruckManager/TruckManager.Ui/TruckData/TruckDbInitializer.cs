@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,12 +11,23 @@ namespace TruckManager.Ui.TruckData
 {
     public static class TruckDbInitializer
     {
-        public static void Initialize(TruckContext context)
+        public static void Initialize(System.IServiceProvider serviceProvider)
         {
-            context.Database.EnsureCreated();
+            using var scope = serviceProvider.CreateScope();
+            var services = scope.ServiceProvider;
+            try
+            {
+                var context = services.GetRequiredService<TruckContext>();
+                context.Database.Migrate();
 
-            SeedTruckModel(context);
-            SeedTruck(context);
+                SeedTruckModel(context);
+                SeedTruck(context);
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occurred creating the Truck DB.");
+            }
         }
 
         private static void SeedTruck(TruckContext context)
@@ -24,20 +38,23 @@ namespace TruckManager.Ui.TruckData
             for (int i = 0; i < 500; i++)
                 context.Trucks.Add(new Truck
                 {
-                    Year = new Random().Next(minimumYear, maximumYear).ToString(),
+                    Year = GetYear().ToString(),
                     Model = GetRandomModel(context)
                 });
 
             context.SaveChanges();
         }
 
+        private static readonly Random random = new Random();
+        private static readonly int minimumYear = DateTime.Today.Year;
+        private static readonly int maximumYear = DateTime.Today.Year + 2;
+
+        private static int GetYear() => random.Next(minimumYear, maximumYear);
+
         private static TruckModel GetRandomModel(TruckContext context)
         {
             return context.TruckModels.OrderBy(o => Guid.NewGuid()).First();
         }
-
-        private static readonly int minimumYear = DateTime.Today.Year;
-        private static readonly int maximumYear = DateTime.Today.Year + 1;
 
 
         private static void SeedTruckModel(TruckContext context)
@@ -47,8 +64,8 @@ namespace TruckManager.Ui.TruckData
 
             var truckModels = new TruckModel[]
             {
-                new TruckModel { Model = "FH", ModelYear = DateTime.Today.Year.ToString() },
-                new TruckModel { Model = "FM", ModelYear = DateTime.Today.Year.ToString() }
+                new TruckModel { Model = "FH", ModelYear = GetYear().ToString() },
+                new TruckModel { Model = "FM", ModelYear = GetYear().ToString() }
             };
 
             foreach (var model in truckModels)

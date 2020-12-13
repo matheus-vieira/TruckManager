@@ -60,9 +60,9 @@ namespace TruckManager.Ui.Pages.Trucks
             {
                 "year" => trucksIQ.OrderBy(s => s.Year),
                 "year_desc" => trucksIQ.OrderByDescending(s => s.Year),
-                "model_name_desc" => trucksIQ.OrderByDescending(s => s.Year),
-                "model_year" => trucksIQ.OrderBy(s => s.Year),
-                "model_year_desc" => trucksIQ.OrderByDescending(s => s.Year),
+                "model_name_desc" => trucksIQ.OrderByDescending(s => s.Model.Model),
+                "model_year" => trucksIQ.OrderBy(s => s.Model.ModelYear),
+                "model_year_desc" => trucksIQ.OrderByDescending(s => s.Model.ModelYear),
                 _ => trucksIQ.OrderBy(s => s.Model.Model),
             };
 
